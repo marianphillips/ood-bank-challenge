@@ -13,6 +13,10 @@ class Transaction {
     isDebit() {
         return this.credit === 0
     }
+
+    clone() {
+        return Object.assign(Object.create(Object.getPrototypeOf(this)), this)
+    }
     
 
 }

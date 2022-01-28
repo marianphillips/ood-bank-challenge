@@ -2,7 +2,6 @@ const Transaction = require("../src/Transaction.js")
 
 class BankAccount {
     constructor() {
-        this.balance = 0
         this.transactions = []
     }
 
@@ -11,13 +10,25 @@ class BankAccount {
     }
 
     deposit(date, num) {
-      this.balance += num
-      this.addTransaction(new Transaction(date, num, 0, this.balance))
+      this.addTransaction(new Transaction(date, num, 0, 0))
     }
 
     withdrawal(date, num) {
-        this.balance -= num
-        this.addTransaction(new Transaction(date, 0, num, this.balance))
+        this.addTransaction(new Transaction(date, 0, num, 0))
+    }
+
+    orderTransactions() {
+        this.transactions.sort((a, b) => b.date - a.date)
+    }
+
+    calculateBalances() {
+        this.transactions.sort((a, b) => a.date - b.date)
+        for(let i = 0; i < this.transactions.length; i++) {
+            for(let j = 0; j <= i; j++) {
+            this.transactions[i].balance += this.transactions[j].credit
+            this.transactions[i].balance -= this.transactions[j].debit
+            }  
+        }
     }
 
 }

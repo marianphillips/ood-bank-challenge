@@ -6,27 +6,27 @@ class PrintStatement {
         this.transactions = transactions
     }
 
-    orderDates() {
-        const orderedDates = []
+    cloneTransactions() {
+        const clone = []
         for (let transaction of this.transactions){
-        // orderedDates.push(Object.assign(Object.create(Object.getPrototypeOf(transaction)), transaction))
-        orderedDates.push(transaction.clone())
+        clone.push(transaction.clone())   
         }   
-        return orderedDates.sort((a, b) => b.date - a.date)
+        return clone
     }
 
     formatDates(array) {
-        for (let transaction of array)
+        for (let transaction of array){
        transaction.date = transaction.date.getDate()+'/'+ String((transaction.date.getMonth()+1)).padStart(2, "0") +'/'+ transaction.date.getFullYear(); 
+        }
     }
 
     printTransactions() {
-        let ordered = this.orderDates()
-        this.formatDates(ordered)
+        let clone = this.cloneTransactions()
+        this.formatDates(clone)
 
         let printed = ``
 
-        for (let transaction of ordered){
+        for (let transaction of clone){
         if(transaction.isCredit()) {
         printed += `${transaction.date} || £${transaction.credit.toFixed(2)}  ||          || £${transaction.balance.toFixed(2)}\n`
         }
@@ -51,7 +51,10 @@ const account = new BankAccount()
 account.deposit(new Date(2012, 0, 10),1000)
 account.withdrawal(new Date(2012, 0, 14),500)
 account.deposit(new Date(2012, 0, 13),2000)
+account.calculateBalances()
+account.orderTransactions()
 
 const statement = new PrintStatement(account.transactions)
 console.log(statement.print())
-console.log(statement.print())
+
+console.table(statement.transactions)
