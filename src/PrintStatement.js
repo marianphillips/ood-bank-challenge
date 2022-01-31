@@ -6,6 +6,10 @@ class PrintStatement {
         this.transactions = transactions
     }
 
+    orderTransactions() {
+        this.transactions.sort((a, b) => b.date - a.date)
+    }
+
     cloneTransactions() {
         const clone = []
         for (let transaction of this.transactions){
@@ -16,7 +20,7 @@ class PrintStatement {
 
     formatDates(array) {
         for (let transaction of array){
-       transaction.date = transaction.date.getDate()+'/'+ String((transaction.date.getMonth()+1)).padStart(2, "0") +'/'+ transaction.date.getFullYear(); 
+        transaction.date = transaction.date.toLocaleDateString() 
         }
     }
 
@@ -52,9 +56,10 @@ account.deposit(new Date(2012, 0, 10),1000)
 account.withdrawal(new Date(2012, 0, 14),500)
 account.deposit(new Date(2012, 0, 13),2000)
 account.calculateBalances()
-account.orderTransactions()
+
 
 const statement = new PrintStatement(account.transactions)
-console.log(statement.print())
+statement.orderTransactions()
 
+console.log(statement.print())
 console.table(statement.transactions)

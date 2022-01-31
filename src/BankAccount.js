@@ -17,10 +17,6 @@ class BankAccount {
         this.addTransaction(new Transaction(date, 0, num, 0))
     }
 
-    orderTransactions() {
-        this.transactions.sort((a, b) => b.date - a.date)
-    }
-
     calculateBalances() {
         this.transactions.sort((a, b) => a.date - b.date)
         for(let i = 0; i < this.transactions.length; i++) {
